@@ -1,0 +1,59 @@
+#如果在server下方加上了address: localhost 会导致只能用localhost(127.0.0.1)回环地址来访问，外部访问不了
+server:
+  port: 8080
+
+
+#踩坑，千万不能手贱在下面把map前的空格给去了
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.forecaster.pojo
+
+
+spring:
+  #数据库基本配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/forecaster?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 1111
+
+  #邮箱基本配置
+  mail:
+    #配置smtp服务主机地址
+    # qq邮箱为smtp.qq.com          端口号465或587
+    # sina    smtp.sina.cn
+    # aliyun  smtp.aliyun.com
+    # 163     smtp.163.com       端口号465或994
+    host: smtp.qq.com
+    #发送者邮箱
+    username: 1873046620@qq.com
+    #配置密码,注意不是真正的密码，而是刚刚申请到的授权码
+    password: gpqyoflsonyvddbd
+    #端口号465或587
+    port: 587
+    #默认的邮件编码为UTF-8
+    default-encoding: UTF-8
+    #其他参数
+    properties:
+      mail:
+        #配置SSL 加密工厂
+        smtp:
+          ssl:
+            #本地测试，先放开ssl
+            enable: false
+            required: false
+          #开启debug模式，这样邮件发送过程的日志会在控制台打印出来，方便排查错误
+        debug: true
+
+
+#下面是讯飞大模型相关配置
+xf:
+  config:
+    host-url: https://spark-api.xf-yun.com/v2.1/chat
+    app-id: 6fb94523
+    api-secret: NTg3NDgwMDk0NGMwZGZjNjY4ODk1MjA5
+    api-key: 1347a1ab698c3cbc5e57ea93dc0d3f52
+    max-response-time: 30     #设置最长等待时间为30s
