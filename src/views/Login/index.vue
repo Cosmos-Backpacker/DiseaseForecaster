@@ -4,7 +4,8 @@ import {ElMessage} from "element-plus";
 import 'element-plus/theme-chalk/el-message.css'  //弹窗样式
 import router from "@/router/index.js";
 import {useUserStore} from "@/stores/userStore.js";
-import {loginAPI} from "@/apis/user.js";
+
+
 
 //获取store实例
 const userStore = useUserStore()
@@ -15,6 +16,7 @@ const form = ref({
   password: '123456',
   agree: true
 })
+
 
 //2.规则数据对象    rules里的规则和form里的变量相对应
 const rules = {
@@ -40,6 +42,7 @@ const rules = {
   ]
 }
 
+
 const formRef = ref(null);
 
 
@@ -55,20 +58,17 @@ const doLogin = () => {
 
     if (valid) {
 
-
       const {account, password} = form.value
-      console.log(form.value.account)
-      console.log(form.value.password)
 
       await userStore.getUserInfo({account, password})   //获取用户信息并存储到store中
       //console.log(userStore)
       console.log(userStore)
       //进行判断，如果响应成功,会返回一个token值
-      if (userStore.userInfo!=null) {
+      if (userStore.userInfo != null) {
         ElMessage({type: 'success', message: '登录成功'})
         //切换页面
         router.replace({path: '/'})
-      }else if (userStore.userInfo===null)  //如果没拿到数据，代表登录失败
+      } else if (userStore.userInfo === null)  //如果没拿到数据，代表登录失败
       {
         ElMessage({type: 'error', message: "用户名或密码错误"})
       }
@@ -77,6 +77,15 @@ const doLogin = () => {
     }
   })
 }
+
+
+//实现跳转注册页面的方法
+const handleRegister = () => {
+  router.push('/register'); // 跳转到注册页面
+};
+
+
+
 </script>
 
 
@@ -114,7 +123,11 @@ const doLogin = () => {
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
-              <el-button size="large" class="subBtn" @click="doLogin">点击登录</el-button>
+              <div class="button-container">
+                <el-button size="large" class="subBtn" @click="doLogin">点击登录</el-button>
+                <el-button size="large" class="subBtn" @click="handleRegister">点击注册</el-button>
+              </div>
+
             </el-form>
           </div>
         </div>
@@ -139,6 +152,19 @@ const doLogin = () => {
 
 
 <style scoped lang='scss'>
+
+.button-container {
+  display: flex;
+  justify-content: space-between; /* 或者使用其他对齐方式，如 'center' */
+  align-items: center; /* 垂直对齐 */
+}
+
+.subBtn {
+  margin: 0 5px; /* 可选，为了给按钮之间添加一些间距 */
+}
+
+
+
 .login-header {
   background: #fff;
   border-bottom: 1px solid #e4e4e4;

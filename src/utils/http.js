@@ -20,8 +20,8 @@ const http = axios.create({
 http.interceptors.request.use(
     //请求前先配置请求信息
     config => {
-    //排除登录请求操作
-    if (config.url === 'api/login/user') {//如果是登录请求则不需要配置
+    //排除登录和注册请求操作
+    if (config.url === 'api/login/user'||config.url==='api/register') {//如果是登录或注册请求则不需要配置
 
         return config;
     }
