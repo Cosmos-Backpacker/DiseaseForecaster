@@ -102,6 +102,7 @@ public class PushServiceImpl implements PushService {
             }
 
         }
+        //最后再增加用户新问的问题
         RoleContent userRoleContent = RoleContent.createUserRoleContent(text);
 
         questions.add(userRoleContent);
@@ -127,6 +128,7 @@ public class PushServiceImpl implements PushService {
             }
             //先记录再返回
             RoleContent.recordAnswer(xfWebSocketListener.getAnswer());
+            //封装成ResultBean对象并返回
             return ResultBean.success(xfWebSocketListener.getAnswer());
         } catch (Exception e) {
             log.error("请求异常：{}", e);

@@ -51,6 +51,7 @@ public class RoleContent {
     public static void recordQuestion(String text) {
         question.add(text);
     }
+
     //创建一个用于记录答案的函数
     public static  void recordAnswer(String GptAnswer){
         answer.add(GptAnswer);

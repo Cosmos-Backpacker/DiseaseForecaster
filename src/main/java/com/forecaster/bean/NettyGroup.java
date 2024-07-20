@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Version: 1.0
  */
 
+
+//监听端口接受客户端的webSocket请求
 public class NettyGroup {
 
     private static ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -23,8 +25,7 @@ public class NettyGroup {
      */
     private static ConcurrentHashMap<String, Channel> channelMap = new ConcurrentHashMap<>();
 
-    private NettyGroup() {
-    }
+    private NettyGroup() {}
 
     /**
      * 获取channel组

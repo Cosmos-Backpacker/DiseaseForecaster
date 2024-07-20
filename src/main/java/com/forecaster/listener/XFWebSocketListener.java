@@ -42,7 +42,7 @@ public class XFWebSocketListener extends WebSocketListener {
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
-        super.onMessage(webSocket, text);
+        super.onMessage(webSocket, text); //先掉用父类的方法接受返回的数据，然后对数据进行处理
         JsonParse myJsonParse = JSON.parseObject(text, JsonParse.class);
         log.info("myJsonParse:{}", JSON.toJSONString(myJsonParse));
         if (myJsonParse.getHeader().getCode() != 0) {
@@ -52,13 +52,19 @@ public class XFWebSocketListener extends WebSocketListener {
             wsCloseFlag = true;
             return;
         }
+
+        //获取响应结果中的答案对象，并保存在一个Text类型的列表中
         List<Text> textList = myJsonParse.getPayload().getChoices().getText();
+
         for (Text temp : textList) {
             //这个日志显示不断传送的过程
             //log.info("返回结果信息为：【{}】", JSON.toJSONString(temp));
+            //将所有返回的答案内容组装起来，因为流式返回会将内容一小段一小段的返回
             this.answer.append(temp.getContent());
         }
         log.info("result:{}", this.answer.toString());
+
+        //传送完成关闭连接
         if (myJsonParse.getHeader().getStatus() == 2) {
             wsCloseFlag = true;
             //todo 将问答信息入库进行记录，可自行实现
