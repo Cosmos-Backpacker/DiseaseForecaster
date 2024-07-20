@@ -26,7 +26,7 @@ public class registerController {
             userService.save(user);
             return Result.success("恭喜你注册成功，请重新登陆一次");
         } catch (Exception e) {
-            return Result.error("用户名已存在");
+            return Result.error("用户名已经存在");
         }
         //用if,else拦截不到这个异常
 //        if (isRegister) {
