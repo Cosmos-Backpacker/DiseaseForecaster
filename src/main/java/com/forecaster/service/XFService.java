@@ -1,6 +1,7 @@
 package com.forecaster.service;
 
 import com.forecaster.bean.WebSocket.ResultBean;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface XFService {
 
@@ -10,7 +11,7 @@ public interface XFService {
 
     ResultBean pushMessageToXFServer(String uid, String text);
 
-     ResultBean OcrRequest() throws Exception;
+     ResultBean OcrRequest(MultipartFile file) throws Exception;
 
 
 }

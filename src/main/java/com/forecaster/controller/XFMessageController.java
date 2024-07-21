@@ -6,10 +6,8 @@ import com.forecaster.service.XFService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Author: ChengLiang
@@ -37,11 +35,10 @@ public class XFMessageController {
 
 
     @PostMapping("/OCR")
-    public ResultBean XFOcr()
+    public ResultBean XFOcr(@RequestParam("file") MultipartFile file)
     {
-
         try {
-            return XFService.OcrRequest();
+            return XFService.OcrRequest(file);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -20,6 +20,11 @@ spring:
     username: root
     password: 1111
 
+  servlet:
+    multipart:
+      max-file-size: 4MB   #上传限制
+      max-request-size: 4MB   #下载限制
+
   #邮箱基本配置
   mail:
     #配置smtp服务主机地址
@@ -58,5 +63,6 @@ xf:
     api-key: 1347a1ab698c3cbc5e57ea93dc0d3f52
     max-response-time: 30     #设置最长等待时间为30s
     host-url-ocr: http://api.xf-yun.com/v1/private/sf8e6aca1     #OCR请求接口
+
 
 

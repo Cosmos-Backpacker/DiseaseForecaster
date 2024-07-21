@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.*;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -20,7 +22,7 @@ import static com.forecaster.utils.OcrUtil.read;
 
 
 /**
- * @Author: ChengLiang
+ * @Author: CosmosBackpacker
  * @CreateTime: 2023-10-19  11:04
  * @Description: TODO
  * @Version: 1.0
@@ -41,7 +43,7 @@ public class XFWebClient {
      */
     /**
      * @description: 发送请求至大模型方法
-     * @author: ChengLiang
+     * @author: CosmosBackpacker
      * @date: 2023/10/19 16:27
      * @param: [用户id, 请求内容, 返回结果监听器listener]
      * @return: okhttp3.WebSocket
@@ -195,7 +197,7 @@ public class XFWebClient {
 
 
     //构造OCR请求体
-    public String createRequestParams_OCR() throws IOException {
+    public String createRequestParams_OCR(MultipartFile file) throws IOException {
         String param = "{"+
                 "    \"header\": {"+
                 "        \"app_id\": \""+xfConfig.getAppId()+"\","+
@@ -215,7 +217,7 @@ public class XFWebClient {
                 "        \"sf8e6aca1_data_1\": {"+
                 "            \"encoding\": \"jpg\","+
                 "            \"status\": " + 3 + "," +
-                "            \"image\": \""+Base64.getEncoder().encodeToString(read("C:/Users/18730/Desktop/测试.png"))+"\""+
+                "            \"image\": \""+Base64.getEncoder().encodeToString(file.getBytes())+"\""+
                 "        }"+
                 "    }"+
                 "}";

@@ -22,6 +22,7 @@ import okhttp3.WebSocket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -161,7 +162,7 @@ public class XFServiceImpl implements XFService {
 
 
     //发起OCR的请求
-    public ResultBean OcrRequest() throws Exception {
+    public ResultBean OcrRequest(MultipartFile file) throws Exception {
 
         //发送请求获取响应体
         URL realUrl = new URL(getAuthUrl_OCR(xfConfig.getHostUrlOcr(), xfConfig.getApiKey(), xfConfig.getApiSecret()));
@@ -172,8 +173,8 @@ public class XFServiceImpl implements XFService {
         httpURLConnection.setRequestMethod("POST");
         httpURLConnection.setRequestProperty("Content-type", "application/json");
         OutputStream out = httpURLConnection.getOutputStream();
-        String params = xfWebClient.createRequestParams_OCR();
-        System.out.println("params=>" + params);
+        String params = xfWebClient.createRequestParams_OCR(file);
+        //System.out.println("params=>" + params);
         out.write(params.getBytes());
         out.flush();
         InputStream is = null;
@@ -209,6 +210,7 @@ public class XFServiceImpl implements XFService {
                 }
              }
          }
+
         log.info("最终返回的答案是{}",finalContent);
         //封装成ResultBean对象
         return ResultBean.success(finalContent.toString());
