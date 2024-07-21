@@ -1,13 +1,20 @@
 package com.forecaster.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.forecaster.bean.NettyGroup;
-import com.forecaster.bean.ResultBean;
-import com.forecaster.bean.RoleContent;
+import com.alibaba.fastjson.JSONObject;
+import com.forecaster.bean.Ocr.JsonParseOcr;
+import com.forecaster.bean.Ocr.Text.JsonParseText;
+import com.forecaster.bean.Ocr.Text.Lines;
+import com.forecaster.bean.Ocr.Text.Pages;
+import com.forecaster.bean.Ocr.Text.Words;
+import com.forecaster.bean.WebSocket.NettyGroup;
+import com.forecaster.bean.WebSocket.ResultBean;
+import com.forecaster.bean.WebSocket.RoleContent;
 import com.forecaster.config.XFConfig;
 import com.forecaster.listener.XFWebClient;
 import com.forecaster.listener.XFWebSocketListener;
-import com.forecaster.service.PushService;
+import com.forecaster.service.XFService;
+import com.forecaster.utils.OcrUtil;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +23,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.forecaster.listener.XFWebClient.getAuthUrl_OCR;
 
 /**
  * @Author: ChengLiang
@@ -27,13 +43,16 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Service
-public class PushServiceImpl implements PushService {
+public class XFServiceImpl implements XFService {
 
     @Autowired
     private XFConfig xfConfig;
 
     @Autowired
     private XFWebClient xfWebClient;
+
+    @Autowired
+    private OcrUtil ocrUtil;
 
     @Override
     public void pushToOne(String uid, String text) {
@@ -137,4 +156,68 @@ public class PushServiceImpl implements PushService {
         }
         return ResultBean.success("");
     }
+
+
+
+
+    //发起OCR的请求
+    public ResultBean OcrRequest() throws Exception {
+
+        //发送请求获取响应体
+        URL realUrl = new URL(getAuthUrl_OCR(xfConfig.getHostUrlOcr(), xfConfig.getApiKey(), xfConfig.getApiSecret()));
+        URLConnection connection = realUrl.openConnection();
+        HttpURLConnection httpURLConnection = (HttpURLConnection) connection;
+        httpURLConnection.setDoInput(true);
+        httpURLConnection.setDoOutput(true);
+        httpURLConnection.setRequestMethod("POST");
+        httpURLConnection.setRequestProperty("Content-type", "application/json");
+        OutputStream out = httpURLConnection.getOutputStream();
+        String params = xfWebClient.createRequestParams_OCR();
+        System.out.println("params=>" + params);
+        out.write(params.getBytes());
+        out.flush();
+        InputStream is = null;
+        try {
+            is = httpURLConnection.getInputStream();
+        } catch (Exception e) {
+            is = httpURLConnection.getErrorStream();
+            throw new Exception("make request error:" + "code is " + httpURLConnection.getResponseMessage() + ocrUtil.readAllBytes(is));
+        }
+
+        //对响应体进行解析
+        String resp=ocrUtil.readAllBytes(is);
+        JsonParseOcr myJsonParseOcr= JSON.parseObject(resp,JsonParseOcr.class);
+        //获取响应提里Base64编码前的text文本
+        String textBase64Decode=new String(Base64.getDecoder().decode(myJsonParseOcr.getPayload().getResult().getText()), "UTF-8");
+        //进行解码获取text内容
+        JSONObject text = JSON.parseObject(textBase64Decode);
+
+        JsonParseText jsonText= JSON.parseObject(String.valueOf(text),JsonParseText.class);
+
+        StringBuilder finalContent= new StringBuilder();
+        //将结果内容拼接起来
+         List<Pages> pages=jsonText.getPages();
+         for (Pages page:pages)//找到pages页面
+         {
+             List<Lines> lines=page.getLines(); //找到lines集合
+             for(Lines line:lines)
+             {
+                 List<Words> words=line.getWords();  //找到words列表
+                for (Words word:words)
+                {
+                    finalContent.append(word.getContent()).append("\n");
+                }
+             }
+         }
+        log.info("最终返回的答案是{}",finalContent);
+        //封装成ResultBean对象
+        return ResultBean.success(finalContent.toString());
+    }
+
+
+
+
+
+
+
 }

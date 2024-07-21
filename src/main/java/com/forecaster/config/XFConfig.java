@@ -21,8 +21,12 @@ public class XFConfig {
 
     private String apiKey;
 
-    private String hostUrl;
+    private String hostUrlWebsocket;  //大模型接口
+
+    private String hostUrlOcr;         //OCR调用接口
 
     private Integer maxResponseTime;
+
+
 
 }

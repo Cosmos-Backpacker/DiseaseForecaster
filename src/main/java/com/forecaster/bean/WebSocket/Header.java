@@ -1,11 +1,11 @@
-package com.forecaster.bean;
+package com.forecaster.bean.WebSocket;
 
 import lombok.Data;
 
 /**
  * @Author: ChengLiang
  * @CreateTime: 2023-10-17  13:37
- * @Description: TODO
+ * @Description:
  * @Version: 1.0
  */
 @Data

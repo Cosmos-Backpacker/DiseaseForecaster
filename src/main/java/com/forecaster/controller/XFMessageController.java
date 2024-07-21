@@ -1,11 +1,13 @@
 package com.forecaster.controller;
 
-import com.forecaster.bean.ResultBean;
-import com.forecaster.service.PushService;
+import com.forecaster.bean.WebSocket.ResultBean;
+import com.forecaster.pojo.Result;
+import com.forecaster.service.XFService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class XFMessageController {
 
     @Autowired
-    private PushService pushService;
+    private XFService XFService;
 
     @GetMapping
     public ResultBean test(String id, String text) {
@@ -30,6 +32,20 @@ public class XFMessageController {
             log.error("uid或text不能为空");
             return ResultBean.fail("uid或text不能为空");
         }
-        return pushService.pushMessageToXFServer(id, text);
+        return XFService.pushMessageToXFServer(id, text);
     }
+
+
+    @PostMapping("/OCR")
+    public ResultBean XFOcr()
+    {
+
+        try {
+            return XFService.OcrRequest();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

@@ -1,4 +1,4 @@
-package com.forecaster.bean;
+package com.forecaster.bean.WebSocket;
 
 import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;

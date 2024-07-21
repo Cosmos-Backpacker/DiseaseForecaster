@@ -52,9 +52,11 @@ spring:
 #下面是讯飞大模型相关配置
 xf:
   config:
-    host-url: https://spark-api.xf-yun.com/v2.1/chat
+    host-url-websocket: https://spark-api.xf-yun.com/v2.1/chat   #大模型的基准请求
     app-id: 6fb94523
     api-secret: NTg3NDgwMDk0NGMwZGZjNjY4ODk1MjA5
     api-key: 1347a1ab698c3cbc5e57ea93dc0d3f52
     max-response-time: 30     #设置最长等待时间为30s
+    host-url-ocr: http://api.xf-yun.com/v1/private/sf8e6aca1     #OCR请求接口
+
 

@@ -1,4 +1,4 @@
-package com.forecaster.bean;
+package com.forecaster.bean.WebSocket;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import lombok.Data;
  * @Version: 1.0
  */
 @Data
-public class JsonParse {
+public class JsonParseWebSocket {
 
     private Header header;
 

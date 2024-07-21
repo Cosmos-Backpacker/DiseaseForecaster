@@ -1,8 +1,8 @@
 package com.forecaster.listener;
 
 import com.alibaba.fastjson.JSON;
-import com.forecaster.bean.JsonParse;
-import com.forecaster.bean.Text;
+import com.forecaster.bean.WebSocket.JsonParseWebSocket;
+import com.forecaster.bean.WebSocket.Text;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -40,13 +40,14 @@ public class XFWebSocketListener extends WebSocketListener {
         log.info("大模型服务器连接成功！");
     }
 
+    //对返回的json数据进行处理
     @Override
     public void onMessage(WebSocket webSocket, String text) {
         super.onMessage(webSocket, text); //先掉用父类的方法接受返回的数据，然后对数据进行处理
-        JsonParse myJsonParse = JSON.parseObject(text, JsonParse.class);
-        log.info("myJsonParse:{}", JSON.toJSONString(myJsonParse));
-        if (myJsonParse.getHeader().getCode() != 0) {
-            log.error("发生错误，错误信息为:{}", JSON.toJSONString(myJsonParse.getHeader()));
+        JsonParseWebSocket myJsonParseWebSocket = JSON.parseObject(text, JsonParseWebSocket.class);
+        log.info("myJsonParse:{}", JSON.toJSONString(myJsonParseWebSocket));
+        if (myJsonParseWebSocket.getHeader().getCode() != 0) {
+            log.error("发生错误，错误信息为:{}", JSON.toJSONString(myJsonParseWebSocket.getHeader()));
             this.answer.append("大模型响应异常，请联系管理员");
             // 关闭连接标识
             wsCloseFlag = true;
@@ -54,7 +55,7 @@ public class XFWebSocketListener extends WebSocketListener {
         }
 
         //获取响应结果中的答案对象，并保存在一个Text类型的列表中
-        List<Text> textList = myJsonParse.getPayload().getChoices().getText();
+        List<Text> textList = myJsonParseWebSocket.getPayload().getChoices().getText();
 
         for (Text temp : textList) {
             //这个日志显示不断传送的过程
@@ -65,7 +66,7 @@ public class XFWebSocketListener extends WebSocketListener {
         log.info("result:{}", this.answer.toString());
 
         //传送完成关闭连接
-        if (myJsonParse.getHeader().getStatus() == 2) {
+        if (myJsonParseWebSocket.getHeader().getStatus() == 2) {
             wsCloseFlag = true;
             //todo 将问答信息入库进行记录，可自行实现
 

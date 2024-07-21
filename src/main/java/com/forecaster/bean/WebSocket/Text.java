@@ -1,4 +1,4 @@
-package com.forecaster.bean;
+package com.forecaster.bean.WebSocket;
 
 import lombok.Data;
 
