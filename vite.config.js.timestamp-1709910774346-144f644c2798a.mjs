@@ -2,8 +2,8 @@
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "file:///D:/VueProject/VueDemo/Demo1/node_modules/vite/dist/node/index.js";
 import AutoImport from "file:///D:/VueProject/VueDemo/Demo1/node_modules/unplugin-auto-import/dist/vite.js";
-import Components from "file:///D:/VueProject/VueDemo/Demo1/node_modules/unplugin-vue-components/dist/vite.js";
-import { ElementPlusResolver } from "file:///D:/VueProject/VueDemo/Demo1/node_modules/unplugin-vue-components/dist/resolvers.js";
+import Components from "file:///D:/VueProject/VueDemo/Demo1/node_modules/unplugin-vue-heartComponent/dist/vite.js";
+import { ElementPlusResolver } from "file:///D:/VueProject/VueDemo/Demo1/node_modules/unplugin-vue-heartComponent/dist/resolvers.js";
 import vue from "file:///D:/VueProject/VueDemo/Demo1/node_modules/@vitejs/plugin-vue/dist/index.mjs";
 var __vite_injected_original_import_meta_url = "file:///D:/VueProject/VueDemo/Demo1/vite.config.js";
 var vite_config_default = defineConfig({

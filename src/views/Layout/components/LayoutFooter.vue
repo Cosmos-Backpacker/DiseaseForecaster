@@ -2,7 +2,7 @@
   <footer class="app_footer">
     <!-- 联系我们 -->
     <div class="contact">
-      <div class="container">
+      <div class="layout-footer-container">
         <dl>
           <dt>客户服务</dt>
           <dd><i class="iconfont icon-DFzaixiankefu"></i> 在线客服</dd>
@@ -32,7 +32,7 @@
     </div>
     <!-- 其它 -->
     <div class="extra">
-      <div class="container">
+      <div class="layout-footer-container">
         <div class="slogan">
           <a href="javascript:;">
             <i class="iconfont icon-DFsuanfamoxing"></i>
@@ -73,9 +73,10 @@
   .contact {
     background: #fff;
 
-    .container {
+    .layout-footer-container {
       padding: 60px 0 40px 25px;
       display: flex;
+      justify-content: center;
     }
 
     dl {
@@ -141,6 +142,7 @@
 
       span {
         display: block;
+        font-size: 16px;
       }
 
       a {
@@ -198,6 +200,7 @@
       span {
         vertical-align: middle;
         text-shadow: 0 0 1px #333;
+        font-size: 15px;
       }
     }
   }

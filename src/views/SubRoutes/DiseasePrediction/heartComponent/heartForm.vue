@@ -1,7 +1,5 @@
 <template>
-
   <div class="child">
-
     <el-form
         ref="ruleFormRef"
         style="max-width: 600px"
@@ -13,6 +11,9 @@
         status-icon
     >
 
+      <el-form-item label="姓名" prop="name">
+        <el-input v-model="ruleForm.name" type="text"/>
+      </el-form-item>
       <el-form-item label="性别" prop="sex">
         <el-select v-model="ruleForm.sex" placeholder="Activity zone">
           <el-option label="男" value="shanghai"/>
@@ -27,12 +28,11 @@
         />
       </el-form-item>
 
-
       <el-form-item label="胸部疼痛情况" prop="cp">
         <el-radio-group v-model="ruleForm.cp">
-          <el-radio value="1.1">疼痛难忍</el-radio>
-          <el-radio value="1.2">较为疼痛</el-radio>
-          <el-radio value="1.3">轻微疼痛</el-radio>
+          <el-radio value="1.1">典型心绞痛</el-radio>
+          <el-radio value="1.2">非典型心绞痛</el-radio>
+          <el-radio value="1.3">没有心绞痛</el-radio>
           <el-radio value="1.4">无症状</el-radio>
         </el-radio-group>
       </el-form-item>
@@ -41,7 +41,7 @@
         <el-input v-model="ruleForm.trestbps"/>
       </el-form-item>
 
-      <el-form-item label="体重" prop="chol">
+      <el-form-item label="胆固醇" prop="chol">
         <el-input v-model="ruleForm.chol"/>
       </el-form-item>
 
@@ -52,39 +52,34 @@
         </el-radio-group>
       </el-form-item>
 
-<!--      <el-form-item label="静息心电图测量情况" prop="estecg">-->
-<!--        <el-radio-group v-model="ruleForm.estecg">-->
-<!--          <el-radio value="3.1">普通</el-radio>-->
-<!--          <el-radio value="3.2">ST-T波异常</el-radio>-->
-<!--          <el-radio value="3.3">左心室肥大</el-radio>-->
-<!--        </el-radio-group>-->
-<!--      </el-form-item>-->
+      <el-form-item label="静息心电图测量情况" prop="estecg">
+        <el-radio-group v-model="ruleForm.estecg">
+          <el-radio value="3.1">普通</el-radio>
+          <el-radio value="3.2">ST-T波异常</el-radio>
+          <el-radio value="3.3">左心室肥大</el-radio>
+        </el-radio-group>
+      </el-form-item>
 
 
       <el-form-item label="最高心跳" prop="thalach">
         <el-input v-model="ruleForm.thalach"/>
       </el-form-item>
 
-      <el-form-item label="运动时心脏是否疼痛" prop="exang">
+      <el-form-item label="运动有发心绞痛" prop="exang">
         <el-radio-group v-model="ruleForm.exang">
           <el-radio value="4.1">是</el-radio>
           <el-radio value="4.2">否</el-radio>
         </el-radio-group>
       </el-form-item>
 
-<!--      <el-form-item label="运动运动后ST段坡度" prop="oldpeak">-->
-<!--        <el-input v-model="ruleForm.oldpeak"/>-->
-<!--      </el-form-item>-->
 
-<!--      -->
-<!--      <el-form-item label="运动ST段的峰值斜率" prop="slope">-->
-<!--        <el-radio-group v-model="ruleForm.slope">-->
-<!--          <el-radio value="5.1">上坡</el-radio>-->
-<!--          <el-radio value="5.2">平的</el-radio>-->
-<!--          <el-radio value="5.3">下坡</el-radio>-->
-<!--        </el-radio-group>-->
-<!--      </el-form-item>-->
-
+      <el-form-item label="运动ST段的峰值斜率" prop="slope">
+        <el-radio-group v-model="ruleForm.slope">
+          <el-radio value="5.1">上坡</el-radio>
+          <el-radio value="5.2">平的</el-radio>
+          <el-radio value="5.3">下坡</el-radio>
+        </el-radio-group>
+      </el-form-item>
 
 
       <el-form-item label="主要血管数目" prop="region">
@@ -124,7 +119,7 @@
       <el-form-item label="最近症状描述" prop="desc">
         <el-input v-model="ruleForm.desc" type="textarea"/>
       </el-form-item>
-      <el-form-item>
+      <el-form-item class="buttonGroup">
         <el-button type="primary" @click="submitForm(ruleFormRef)">
           提交
         </el-button>
@@ -143,13 +138,14 @@ import type {FormInstance, FormRules} from 'element-plus'
 
 
 interface RuleForm {
+  name: string,
   sex: string,//性别
-  cp:'',//胸部疼痛情况
-  thal:'',//一种血液疾病
-  ca:'',//主要血管数目
-  slope:'',//运动ST段的峰值斜率
-  oldpeak:'',//运动相对于休息引起的ST抑制
-  exang:'',//运动诱发心绞痛（1：yes；2：no）
+  cp: '',//胸部疼痛情况
+  thal: '',//一种血液疾病
+  ca: '',//主要血管数目
+  slope: '',//运动ST段的峰值斜率
+  oldpeak: '',//运动相对于休息引起的ST抑制
+  exang: '',//运动诱发心绞痛（1：yes；2：no）
   thalach: '',//最高心跳
   estecg: string,  //静息心电图测量
   fbs: string,    //空腹血糖
@@ -170,18 +166,18 @@ const formSize = ref('default')
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive<RuleForm>({
   sex: '',
-  cp:'',
-  thal:'',
-  ca:'',
-  slope:'',
-  oldpeak:'',
-  exang:'',
-  thalach:'',
+  cp: '',
+  thal: '',
+  ca: '',
+  slope: '',
+  oldpeak: '',
+  exang: '',
+  thalach: '',
   estecg: '',
   fbs: '',
   chol: '',
   trestbps: '',
-  name: 'user001',
+  name: '',
   region: '',
   count: '',
   date1: '',
@@ -195,7 +191,7 @@ const ruleForm = reactive<RuleForm>({
 const rules = reactive<FormRules<RuleForm>>({
   name: [
     {required: true, message: 'Please input Activity name', trigger: 'blur'},
-    {min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur'},
+    //{min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur'},
   ],
   region: [
     {
@@ -269,3 +265,79 @@ const options = Array.from({length: 100}).map((_, idx) => ({
 }))
 </script>
 
+
+<style scoped>
+/* 全局样式 */
+body {
+  font-family: 'Arial', sans-serif; /* 设置全局字体 */
+  color: #333; /* 设置全局字体颜色 */
+}
+
+/* 表单样式 */
+.demo-ruleForm {
+  width: 100%;
+  margin: 0 auto; /* 居中显示 */
+  padding: 20px;
+  background-color: #f9f9f9; /* 表单背景颜色 */
+  border-radius: 8px; /* 表单圆角 */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1); /* 表单阴影 */
+}
+
+/* 表单项样式 */
+.el-form-item {
+  margin-bottom: 20px; /* 表单项之间的距离 */
+}
+
+/* 输入框和选择框样式 */
+.el-input__inner,
+.el-textarea__inner,
+.el-select-dropdown__item {
+  border: 1px solid #dcdfe6; /* 输入框和选择框边框颜色 */
+  border-radius: 4px; /* 输入框和选择框圆角 */
+  transition: border-color 0.2s; /* 边框颜色变化动画 */
+}
+
+.el-input__inner:focus,
+.el-textarea__inner:focus,
+.el-select-dropdown__item:hover {
+  border-color: #409eff; /* 输入框和选择框聚焦或悬停时的边框颜色 */
+}
+
+/* 按钮样式 */
+.el-button {
+  border-radius: 4px; /* 按钮圆角 */
+  font-weight: bold; /* 按钮字体加粗 */
+  transition: background-color 0.2s, border-color 0.2s; /* 背景色和边框颜色变化动画 */
+}
+
+.el-button--primary {
+  background-color: #409eff; /* 主要按钮背景颜色 */
+  border-color: #409eff; /* 主要按钮边框颜色 */
+  color: white; /* 主要按钮字体颜色 */
+}
+
+.el-button--primary:hover {
+  background-color: #66b1ff; /* 主要按钮悬停时的背景颜色 */
+  border-color: #66b1ff; /* 主要按钮悬停时的边框颜色 */
+}
+
+/* 重置按钮样式 */
+.el-button {
+  background-color: #fff; /* 重置按钮背景颜色 */
+  color: #409eff; /* 重置按钮字体颜色 */
+  border-color: #dcdfe6; /* 重置按钮边框颜色 */
+}
+
+.el-button:hover {
+  border-color: #409eff; /* 重置按钮悬停时的边框颜色 */
+  color: #409eff; /* 重置按钮悬停时的字体颜色 */
+}
+
+.buttonGroup{
+  margin-left: 200px;
+}
+
+
+
+
+</style>

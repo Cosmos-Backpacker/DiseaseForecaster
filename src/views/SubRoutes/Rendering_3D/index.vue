@@ -16,6 +16,7 @@ onMounted(() => {
   initGraph();
 });
 
+
 const initGraph = async () => {
   // ... (省略了大部分代码，保持原样，只做必要的转换)
   myGraph.value = ForceGraph3D({
@@ -153,6 +154,6 @@ const getCyperResult = async (limit_items) => {
 </template>
 
 
-<style>
+<style scoped>
 
 </style>

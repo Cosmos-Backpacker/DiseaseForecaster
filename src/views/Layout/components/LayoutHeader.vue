@@ -1,8 +1,14 @@
 <script setup>
+
+import router from "@/router/index.js";
+//路由跳转函数
+function toPath(path) {
+  router.replace(path)
+}
 </script>
 
 <template>
-  <header class='app-header' >
+  <header class='app-header'>
     <div class="container">
       <h1 class="logo">
         <RouterLink to="/">疾病预测平台</RouterLink>
@@ -10,13 +16,23 @@
 
       <ul class="app-header-nav">
         <li class="home">
-          <RouterLink to="/">首页</RouterLink>
+          <a @click="toPath('/')">平台数据展示</a>
         </li>
-        <li> <RouterLink to="DiseasePrediction" >疾病预测</RouterLink> </li>
-        <li> <RouterLink to="MedicalAssistants">医疗助手</RouterLink> </li>
-        <li> <RouterLink to="Rendering_3D">3D展示</RouterLink> </li>
-        <li> <RouterLink to="DiseaseInquiry">疾病查询</RouterLink> </li>
-        <li> <RouterLink to="PlaneDevelopment">计划制定</RouterLink> </li>
+        <li>
+          <a @click="toPath('/DiseasePrediction')">疾病预测</a>
+        </li>
+        <li>
+          <a @click="toPath('/MedicalAssistants')"> AI智能助手</a>
+        </li>
+        <li>
+          <a @click="toPath('/Rendering_3D')">3D展示</a>
+        </li>
+        <li>
+          <a @click="toPath('/DiseaseInquiry')">疾病查询</a>
+        </li>
+        <li>
+          <a @click="toPath('/moreFunctions')">更多功能</a>
+        </li>
       </ul>
 
       <div class="search">
@@ -35,28 +51,31 @@
   background: #fff;
 
   .container {
+    width: 100%;
     display: flex;
     align-items: center;
   }
 
   .logo {
-    width: 200px;
+    width: 200*1.5px;
+    margin-left: 30px;
 
     a {
       display: block;
-      height: 132px;
+      height: 150px;
       width: 100%;
       text-indent: -9999px;
-      background: url('@/assets/images/logo.png') no-repeat center 18px / contain;
+      background: url('@/assets/images/logo.png') no-repeat center  / contain;
     }
   }
 
   .app-header-nav {
     width: 820px;
     display: flex;
-    padding-left: 40px;
+    padding-left: 10px;
     position: relative;
     z-index: 998;
+    margin-left: 50px;
 
     li {
       margin-right: 40px;

@@ -30,9 +30,9 @@
 
       <el-form-item label="胸部疼痛情况" prop="cp">
         <el-radio-group v-model="ruleForm.cp">
-          <el-radio value="1.1">典型心绞痛</el-radio>
-          <el-radio value="1.2">非典型心绞痛</el-radio>
-          <el-radio value="1.3">没有心绞痛</el-radio>
+          <el-radio value="1.1">疼痛难忍</el-radio>
+          <el-radio value="1.2">较为疼痛</el-radio>
+          <el-radio value="1.3">轻微疼痛</el-radio>
           <el-radio value="1.4">无症状</el-radio>
         </el-radio-group>
       </el-form-item>
@@ -41,7 +41,7 @@
         <el-input v-model="ruleForm.trestbps"/>
       </el-form-item>
 
-      <el-form-item label="胆固醇" prop="chol">
+      <el-form-item label="体重" prop="chol">
         <el-input v-model="ruleForm.chol"/>
       </el-form-item>
 
@@ -52,39 +52,38 @@
         </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="静息心电图测量情况" prop="estecg">
-        <el-radio-group v-model="ruleForm.estecg">
-          <el-radio value="3.1">普通</el-radio>
-          <el-radio value="3.2">ST-T波异常</el-radio>
-          <el-radio value="3.3">左心室肥大</el-radio>
-        </el-radio-group>
-      </el-form-item>
+<!--      <el-form-item label="静息心电图测量情况" prop="estecg">-->
+<!--        <el-radio-group v-model="ruleForm.estecg">-->
+<!--          <el-radio value="3.1">普通</el-radio>-->
+<!--          <el-radio value="3.2">ST-T波异常</el-radio>-->
+<!--          <el-radio value="3.3">左心室肥大</el-radio>-->
+<!--        </el-radio-group>-->
+<!--      </el-form-item>-->
 
 
       <el-form-item label="最高心跳" prop="thalach">
         <el-input v-model="ruleForm.thalach"/>
       </el-form-item>
 
-      <el-form-item label="运动有发心绞痛" prop="exang">
+      <el-form-item label="运动时心脏是否疼痛" prop="exang">
         <el-radio-group v-model="ruleForm.exang">
           <el-radio value="4.1">是</el-radio>
           <el-radio value="4.2">否</el-radio>
         </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="运动运动后ST段坡度" prop="oldpeak">
-        <el-input v-model="ruleForm.oldpeak"/>
-      </el-form-item>
+<!--      <el-form-item label="运动运动后ST段坡度" prop="oldpeak">-->
+<!--        <el-input v-model="ruleForm.oldpeak"/>-->
+<!--      </el-form-item>-->
 
-      <el-form-item label="运动ST段的峰值斜率" prop="slope">
-        <el-radio-group v-model="ruleForm.slope">
-          <el-radio value="5.1">上坡</el-radio>
-          <el-radio value="5.2">平的</el-radio>
-          <el-radio value="5.3">下坡</el-radio>
-        </el-radio-group>
-      </el-form-item>
-
-
+<!--      -->
+<!--      <el-form-item label="运动ST段的峰值斜率" prop="slope">-->
+<!--        <el-radio-group v-model="ruleForm.slope">-->
+<!--          <el-radio value="5.1">上坡</el-radio>-->
+<!--          <el-radio value="5.2">平的</el-radio>-->
+<!--          <el-radio value="5.3">下坡</el-radio>-->
+<!--        </el-radio-group>-->
+<!--      </el-form-item>-->
 
 
 
@@ -248,6 +247,8 @@ const rules = reactive<FormRules<RuleForm>>({
   ],
 })
 
+
+
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
@@ -258,6 +259,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     }
   })
 }
+
+
 
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return

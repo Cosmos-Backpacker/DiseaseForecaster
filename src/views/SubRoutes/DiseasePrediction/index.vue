@@ -1,126 +1,85 @@
-<template>
-  <div class="mybox">
-    <!-- 占空间的盒子-->
-    <div style="height: 20px"/>
-
-    <div class="box">
-
-      <el-button plain @click="dialogTableVisible = true">
-        累计数据
-      </el-button>
-
-      <el-button plain @click="dialogFormVisible = true">
-        填写表单
-      </el-button>
-      <el-button plain @click="dialogFormVisible = true">
-        简略版
-      </el-button>
-
-
-      <el-dialog v-model="dialogTableVisible" title="累计记录" width="800">
-        <!-- 统计组件-->
-        <!--      <statistics></statistics>-->
-
-      </el-dialog>
-
-      <!--    对话框-->
-      <el-dialog v-model="dialogFormVisible" title="预测表单" width="500">
-
-
-        <!--   新增计划表格   -->
-        <heart-form></heart-form>
-
-      </el-dialog>
-
-
-      <el-dialog v-model="dialogFormVisible" title="预测表单" width="500">
-
-
-        <!--   新增计划表格   -->
-        <user-heart-form></user-heart-form>
-
-      </el-dialog>
-      <!--下面累计分页展示表格-->
-      <div style="height: 20px"></div>
-      <!--    <pagination></pagination>-->
-
-
-    </div>
-  </div>
-
-</template>
-
 <script setup>
-// import statistics from './components/statistics.vue'
-// import pagination from './components/pagination.vue'
-import heartForm from './components/heartForm.vue'
-import {reactive, ref} from 'vue'
-import userHeartForm from './components/userHeartForm.vue'
+import {UploadFilled} from '@element-plus/icons-vue'
+import {
+  Document,
+  Menu as IconMenu,
+  Location,
+  Setting,
+} from '@element-plus/icons-vue'
 
-const dialogTableVisible = ref(false)
-const dialogFormVisible = ref(false)
-const formLabelWidth = '140px'
-const checked2 = ref(true)
-
-const form = reactive({
-  name: '',
-  region: '',
-  date1: '',
-  date2: '',
-  delivery: false,
-  type: [],
-  resource: '',
-  desc: '',
-  startTime: '',
-  endTime: '',
-  over: true,
-  not_over: false
-})
-
-const gridData = [
-  {
-    date: '2024-03-06',
-    name: '跑步',
-    address: '已完成',
-    creatTime: '2024-03-06 16:00',
-    endTime: '2024-03-06 17:00',
-    isOver: true
-  },
-  {
-    date: '2024-03-06',
-    name: '俯卧撑30个',
-    address: '未完成',
-    creatTime: '2024-03-06 16:00',
-    endTime: '2024-03-06 16:02',
-    isOver: false
-  },
-  {
-    date: '2024-03-06',
-    name: '拉杠铃20次',
-    address: '已完成',
-    creatTime: '2024-03-06 16:30',
-    endTime: '2024-03-06 16:40',
-    isOver: true
-  },
-  {
-    date: '2024-03-06',
-    name: '跳绳300个',
-    address: '已完成',
-    creatTime: '2024-03-06 14:00',
-    endTime: '2024-03-06 16:00',
-    isOver: true
-  },
-]
 </script>
 
 
-<style>
-.mybox {
-  height: 100%;
-  background-color: #cccccc;
+<template>
+
+  <div class="common-layout">
+    <el-container>
+      <el-aside width="200px">
+
+        <el-menu
+            default-active="2"
+            class="el-menu-vertical"
+        >
+
+          <el-menu-item index="1">
+            <el-icon>
+              <icon-menu/>
+            </el-icon>
+            <span>
+              <router-link to="/DiseasePrediction">心脏病</router-link>
+            
+            </span>
+          </el-menu-item>
+
+          <el-menu-item index="2">
+            <el-icon>
+              <document/>
+            </el-icon>
+            <span>
+
+              <router-link to="/Diabetes">糖尿病</router-link>
+            </span>
+          </el-menu-item>
+
+          <el-sub-menu index="3">
+            <template #title>
+              <el-icon><location /></el-icon>
+              <span>其他</span>
+            </template>
+            <el-menu-item index="1">
+              <el-icon>
+                <document/>
+              </el-icon>
+              <span>
+
+              <router-link to="/HealthQuestionnaire">健康问卷</router-link>
+            </span>
+            </el-menu-item>
+          </el-sub-menu>
+        </el-menu>
+      </el-aside>
+
+
+      <el-main>
+        <router-view/>
+      </el-main>
+
+
+    </el-container>
+  </div>
+
+
+</template>
+
+
+<style scoped>
+.el-menu-vertical {
+  height: auto;
 }
 
-.box {
-  height: 400px;
+.el-main{
+  height: auto;
 }
+
+
 </style>

@@ -1,10 +1,10 @@
 // 重置样式
 * {
   box-sizing: border-box;
+  font-size: 15px;
 }
 
 html {
-  height: 100%;
   font-size: 14px;
 }
 body {
@@ -61,11 +61,14 @@ ul {
   user-select: none;
 }
 
+
 .container {
   width: 1300px;
   margin: 0 auto;
   position: relative;
 }
+
+
 .ellipsis {
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -81,13 +84,16 @@ ul {
   overflow: hidden;
 }
 
+
 .fl {
   float: left;
 }
 
+
 .fr {
   float: right;
 }
+
 
 .clearfix:after {
   content: '.';
@@ -97,6 +103,8 @@ ul {
   line-height: 0;
   clear: both;
 }
+
+
 
 // reset element
 .el-breadcrumb__inner.is-link {

@@ -9,10 +9,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
     "@vueuse/core": "^10.9.0",
     "3d-force-graph": "^1.73.2",
     "axios": "^1.6.7",
+    "dompurify": "^3.2.4",
     "element-plus": "^2.6.0",
+    "highlight.js": "^11.11.1",
+    "icons-vue": "^1.0.9",
+    "marked": "^15.0.7",
     "neo4j-driver": "^5.18.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",

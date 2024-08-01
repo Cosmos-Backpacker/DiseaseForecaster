@@ -3,12 +3,14 @@
 </script>
 
 <template>
+  <div class="container"></div>
   <router-view/>
 </template>
 
+
 <style scoped lang="scss">
-header {
-  color: $priceColor
+.container{
+  height: 100%;
 }
 </style>
 

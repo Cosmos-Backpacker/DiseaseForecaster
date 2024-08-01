@@ -1,22 +1,36 @@
 <script setup>
-import { useScroll } from '@vueuse/core'
-const { y } = useScroll(window)
+import {useScroll} from '@vueuse/core'
+
+const {y} = useScroll(window)
+
+import router from "@/router/index.js";
+
+//路由跳转函数
+function toPath(path) {
+  router.replace(path)
+}
 </script>
 
 <template>
   <div class="app-header-sticky  " :class="{show:y>78}">
     <div class="container">
-      <RouterLink class="logo" to="/" />
+      <!-- 网站logo -->
+        <RouterLink class="logo" to="/"/>
+
+
       <!-- 导航区域 -->
       <ul class="app-header-nav ">
         <li class="home">
-          <RouterLink to="/">首页</RouterLink>
+          <a @click="toPath('/')"> 平台数据展示</a>
         </li>
-        <li> <RouterLink to="DiseasePrediction" >疾病预测</RouterLink> </li>
-        <li> <RouterLink to="MedicalAssistants">医疗助手</RouterLink> </li>
-        <li> <RouterLink to="Rendering_3D">3D展示</RouterLink> </li>
-        <li> <RouterLink to="DiseaseInquiry">疾病查询</RouterLink> </li>
-        <li> <RouterLink to="PlaneDevelopment">计划制定</RouterLink> </li>
+        <li>
+          <a @click="toPath('/DiseasePrediction')">疾病预测</a>
+
+        </li>
+        <li><a @click="toPath('/MedicalAssistants')"> AI智能助手</a></li>
+        <li><a @click="toPath('/Rendering_3D')">3D展示</a></li>
+        <li><a @click="toPath('/DiseaseInquiry')">疾病查询</a></li>
+        <li><a @click="toPath('/moreFunctions')">更多功能</a></li>
       </ul>
 
       <div class="right">
@@ -50,7 +64,9 @@ const { y } = useScroll(window)
     opacity: 1;
   }
 
+
   .container {
+    width: 100%;
     display: flex;
     align-items: center;
   }
@@ -58,7 +74,8 @@ const { y } = useScroll(window)
   .logo {
     width: 200px;
     height: 80px;
-    background: url("@/assets/images/logo.png") no-repeat right 2px;
+    margin-left: 50px;
+    background: url("@/assets/images/logo.png") no-repeat center center;
     background-size: 160px auto;
   }
 
@@ -67,6 +84,7 @@ const { y } = useScroll(window)
     display: flex;
     text-align: center;
     padding-left: 40px;
+    margin-left: 50px;
     border-left: 2px solid $xtxColor;
 
     a {
@@ -84,8 +102,10 @@ const { y } = useScroll(window)
 
 .app-header-nav {
   width: 820px;
+  height: auto;
   display: flex;
   padding-left: 40px;
+  margin-left: 80px;
   position: relative;
   z-index: 998;
 
@@ -96,8 +116,8 @@ const { y } = useScroll(window)
 
     a {
       font-size: 16px;
-      line-height: 32px;
-      height: 32px;
+      line-height: 50px;
+      height: 50px;
       display: inline-block;
 
       &:hover {
@@ -112,7 +132,7 @@ const { y } = useScroll(window)
     }
   }
 
-  .right{
+  .right {
     margin-right: auto;
     width: auto;
     text-align: center;
