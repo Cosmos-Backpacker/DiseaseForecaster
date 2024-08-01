@@ -13,6 +13,11 @@
         status-icon
     >
 
+
+      <el-form-item label="姓名" prop="name">
+        <el-input v-model="ruleForm.name" type="textarea"/>
+      </el-form-item>
+
       <el-form-item label="性别" prop="sex">
         <el-select v-model="ruleForm.sex" placeholder="Activity zone">
           <el-option label="男" value="shanghai"/>
@@ -143,7 +148,9 @@ import {reactive, ref} from 'vue'
 import type {FormInstance, FormRules} from 'element-plus'
 
 
+
 interface RuleForm {
+  name:string,
   sex: string,//性别
   cp:'',//胸部疼痛情况
   thal:'',//一种血液疾病
@@ -182,7 +189,7 @@ const ruleForm = reactive<RuleForm>({
   fbs: '',
   chol: '',
   trestbps: '',
-  name: 'user001',
+  name: '',
   region: '',
   count: '',
   date1: '',
@@ -196,7 +203,7 @@ const ruleForm = reactive<RuleForm>({
 const rules = reactive<FormRules<RuleForm>>({
   name: [
     {required: true, message: 'Please input Activity name', trigger: 'blur'},
-    {min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur'},
+    //{min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur'},
   ],
   region: [
     {

@@ -3,6 +3,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import Layout from '@/views/Layout/index.vue'
 import Login from '@/views/Login/index.vue'
 import Register from '@/views/Register/index.vue'
+import NotFound from "@/views/NotFound/NotFound.vue";
 
 //二级路由
 import Home from '@/views/Home/index.vue'
@@ -19,6 +20,8 @@ import UserInfo from '@/views/SubRoutes/UserCenter/components/UserInfo.vue'
 import UserHeartData from '@/views/SubRoutes/UserCenter/components/UserHeartData.vue'
 import MedicalAssistantsContainer from "@/views/SubRoutes/MedicalAssistants/components/MedicalAssistantsContainer.vue";
 import Robot from "@/views/SubRoutes/MedicalAssistants/components/Robot.vue";
+import Ocr from "@/views/SubRoutes/MedicalAssistants/components/Ocr.vue";
+import ImageU from "@/views/SubRoutes/MedicalAssistants/components/ImageU.vue";
 
 
 const router = createRouter({
@@ -50,6 +53,14 @@ const router = createRouter({
                             //三级路由小机器人
                             path: 'Robot',
                             component: Robot
+                        },
+                        {
+                            path: 'Ocr',
+                            component: Ocr
+                        },
+                        {
+                            path: 'ImageU',
+                            component: ImageU
                         }
 
                     ]
@@ -98,6 +109,10 @@ const router = createRouter({
             path: '/register',
             component: Register
         },
+        {
+            path: '/notFound',
+            component: NotFound
+        }
 
     ]
 })

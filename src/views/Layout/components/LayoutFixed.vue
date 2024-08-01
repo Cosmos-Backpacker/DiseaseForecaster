@@ -1,22 +1,33 @@
 <script setup>
-import { useScroll } from '@vueuse/core'
-const { y } = useScroll(window)
+import {useScroll} from '@vueuse/core'
+
+const {y} = useScroll(window)
+
+import router from "@/router/index.js";
+
+//路由跳转函数
+function toPath(path) {
+  router.replace(path)
+}
 </script>
 
 <template>
   <div class="app-header-sticky  " :class="{show:y>78}">
     <div class="container">
-      <RouterLink class="logo" to="/" />
+      <RouterLink class="logo" to="/"/>
       <!-- 导航区域 -->
       <ul class="app-header-nav ">
         <li class="home">
           <RouterLink to="/">首页</RouterLink>
         </li>
-        <li> <RouterLink to="DiseasePrediction" >疾病预测</RouterLink> </li>
-        <li> <RouterLink to="MedicalAssistants">医疗助手</RouterLink> </li>
-        <li> <RouterLink to="Rendering_3D">3D展示</RouterLink> </li>
-        <li> <RouterLink to="DiseaseInquiry">疾病查询</RouterLink> </li>
-        <li> <RouterLink to="PlaneDevelopment">计划制定</RouterLink> </li>
+        <li>
+          <a @click="toPath('/DiseasePrediction')">疾病预测</a>
+
+        </li>
+        <li><a @click="toPath('/MedicalAssistants')"> 医疗助手</a></li>
+        <li><a @click="toPath('/Rendering_3D')">3D展示</a></li>
+        <li><a @click="toPath('/DiseaseInquiry')">疾病查询</a></li>
+        <li><a @click="toPath('/PlaneDevelopment')">计划制定</a></li>
       </ul>
 
       <div class="right">
@@ -112,7 +123,7 @@ const { y } = useScroll(window)
     }
   }
 
-  .right{
+  .right {
     margin-right: auto;
     width: auto;
     text-align: center;

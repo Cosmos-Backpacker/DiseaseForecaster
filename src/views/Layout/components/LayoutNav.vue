@@ -3,8 +3,9 @@
 import router from "@/router/index.js";
 import {useUserStore} from "@/stores/userStore.js";
 
-const userStore=useUserStore()
-function confirm(){
+const userStore = useUserStore()
+
+function confirm() {
   //确认后
   //清空用户数据
   userStore.clearUserInfo()
@@ -20,16 +21,16 @@ function confirm(){
       <ul>
         <template v-if="userStore.userInfo.token">
 
-          <li><RouterLink to="userCenter"><i class="iconfont icon-user"></i>{{userStore.userInfo.nickname}}</RouterLink></li>
+          <li>
+            <RouterLink to="userCenter"><i class="iconfont icon-user"></i>{{ userStore.userInfo.nickname }}</RouterLink>
+          </li>
           <li>
             <el-popconfirm title="确认退出吗?" confirm-button-text="确认" cancel-button-text="取消" @confirm="confirm">
               <template #reference>
-                <a href="javascript:;" >退出登录</a>
+                <a href="javascript:;">退出登录</a>
               </template>
             </el-popconfirm>
           </li>
-
-
 
         </template>
         <template v-else>
@@ -38,6 +39,7 @@ function confirm(){
           <li><a href="javascript:;">关于我们</a></li>
         </template>
       </ul>
+
     </div>
   </nav>
 </template>
@@ -46,11 +48,13 @@ function confirm(){
 <style scoped lang="scss">
 .app-topnav {
   background: #333;
+
   ul {
     display: flex;
     height: 53px;
     justify-content: flex-end;
     align-items: center;
+
     li {
       a {
         padding: 0 15px;
@@ -68,7 +72,7 @@ function confirm(){
         }
       }
 
-      ~li {
+      ~ li {
         a {
           border-left: 2px solid #666;
         }
@@ -76,4 +80,5 @@ function confirm(){
     }
   }
 }
+
 </style>

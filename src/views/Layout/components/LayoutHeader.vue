@@ -1,8 +1,14 @@
 <script setup>
+
+import router from "@/router/index.js";
+//路由跳转函数
+function toPath(path) {
+  router.replace(path)
+}
 </script>
 
 <template>
-  <header class='app-header' >
+  <header class='app-header'>
     <div class="container">
       <h1 class="logo">
         <RouterLink to="/">疾病预测平台</RouterLink>
@@ -10,13 +16,23 @@
 
       <ul class="app-header-nav">
         <li class="home">
-          <RouterLink to="/">首页</RouterLink>
+          <a @click="toPath('/')">首页</a>
         </li>
-        <li> <RouterLink to="DiseasePrediction" >疾病预测</RouterLink> </li>
-        <li> <RouterLink to="MedicalAssistants">医疗助手</RouterLink> </li>
-        <li> <RouterLink to="Rendering_3D">3D展示</RouterLink> </li>
-        <li> <RouterLink to="DiseaseInquiry">疾病查询</RouterLink> </li>
-        <li> <RouterLink to="PlaneDevelopment">计划制定</RouterLink> </li>
+        <li>
+          <a @click="toPath('/DiseasePrediction')">疾病预测</a>
+        </li>
+        <li>
+          <a @click="toPath('/MedicalAssistants')"> 医疗助手</a>
+        </li>
+        <li>
+          <a @click="toPath('/Rendering_3D')">3D展示</a>
+        </li>
+        <li>
+          <a @click="toPath('/DiseaseInquiry')">疾病查询</a>
+        </li>
+        <li>
+          <a @click="toPath('/PlaneDevelopment')">计划制定</a>
+        </li>
       </ul>
 
       <div class="search">

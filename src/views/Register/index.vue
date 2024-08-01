@@ -14,6 +14,7 @@ const form = ref({
   confirmPassword: 'ww11111',
 });
 
+
 const showMessage = ref(false);
 const message = ref('');
 
@@ -79,12 +80,27 @@ const onSubmit =()=>{
     }
   })
 }
+
+//定义返回注册页面的按钮
+const goToLogin = () => {
+  router.push('/login'); // 导航到登录页面
+};
+
+
+
 </script>
 
 
 <template>
   <div>
     <h2>注册</h2>
+
+    <div class="back-button-container">
+      <el-button type="text" class="back-button" @click="goToLogin">
+        <i class="el-icon-arrow-left"></i> 返回登录
+      </el-button>
+    </div>
+
     <el-form ref="formRef" :rules="rules" :model="form"label-width="80px" class="register-form">
       <el-form-item label="用户名" prop="account">
         <el-input v-model="form.account"/>
@@ -143,5 +159,30 @@ div[v-if="showMessage"] {
   margin-top: 20px; /* 提示消息与注册按钮的间距 */
   color: green; /* 提示消息字体颜色 */
 }
+
+
+.back-button-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.back-button {
+  color: #409EFF; /* Element Plus的主色调或其他你喜欢的颜色 */
+  border: none; /* 去除边框 */
+  background-color: transparent; /* 透明背景 */
+  padding: 0 10px; /* 调整按钮内边距 */
+  font-size: 14px; /* 字体大小 */
+  cursor: pointer; /* 鼠标悬停时显示小手图标 */
+  transition: color 0.3s; /* 过渡效果 */
+}
+
+
+.back-button:hover {
+  color: #59d0a1; /* 悬停时改变颜色 */
+}
+
 
 </style>

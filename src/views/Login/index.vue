@@ -66,6 +66,7 @@ const doLogin = () => {
       //进行判断，如果响应成功,会返回一个token值
       if (userStore.userInfo != null) {
         ElMessage({type: 'success', message: '登录成功'})
+
         //切换页面
         router.replace({path: '/'})
       } else if (userStore.userInfo === null)  //如果没拿到数据，代表登录失败
@@ -94,13 +95,13 @@ const handleRegister = () => {
     <header class="login-header">
       <div class="container m-top-20">
         <h1 class="logo">
-          <RouterLink to="/">疾病预测平台</RouterLink>
+          <RouterLink to="/login">疾病预测平台</RouterLink>
         </h1>
-        <RouterLink class="entry" to="/">
-          进入网站首页
-          <i class="iconfont icon-angle-right"></i>
-          <i class="iconfont icon-angle-right"></i>
-        </RouterLink>
+<!--        <RouterLink class="entry" to="/">-->
+<!--          进入网站首页-->
+<!--          <i class="iconfont icon-angle-right"></i>-->
+<!--          <i class="iconfont icon-angle-right"></i>-->
+<!--        </RouterLink>-->
       </div>
     </header>
     <section class="login-section">
