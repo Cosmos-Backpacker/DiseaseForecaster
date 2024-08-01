@@ -1,7 +1,6 @@
 package com.forecaster.controller;
 
-import com.forecaster.bean.WebSocket.ResultBean;
-import com.forecaster.pojo.Result;
+import com.forecaster.bean.WebSocketBigModel.ResultBean;
 import com.forecaster.service.XFService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @Version: 1.0
  */
 
+
 @Slf4j
 @RestController
 @RequestMapping("/xfModel")
@@ -24,7 +24,7 @@ public class XFMessageController {
     @Autowired
     private XFService XFService;
 
-    @GetMapping
+    @GetMapping("/BigModel")
     public ResultBean test(String id, String text) {
         if (StringUtils.isEmpty(id) || StringUtils.isEmpty(text)) {
             log.error("uid或text不能为空");
@@ -35,13 +35,32 @@ public class XFMessageController {
 
 
     @PostMapping("/OCR")
-    public ResultBean XFOcr(@RequestParam("file") MultipartFile file)
-    {
+    public ResultBean XFOcr(@RequestParam("file") MultipartFile file) {
         try {
             return XFService.OcrRequest(file);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("/imageU")
+    public ResultBean XFImageU(@RequestParam("file") MultipartFile file, String id, String text) {
+        if (StringUtils.isEmpty(id) || StringUtils.isEmpty(text)) {
+            log.error("uid或text不能为空");
+            return ResultBean.fail("uid或text不能为空");
+        }
+        return XFService.ImageUnderstand(file, id, text);
+    }
+
+
+    @PostMapping("/imageG")
+    public ResultBean XFImageG(String uid, String content) {
+        if (StringUtils.isEmpty(uid) || StringUtils.isEmpty(content)) {
+            return ResultBean.fail("uid或text不能为空");
+        }
+
+        return ResultBean.success( XFService.ImageGeneration(uid, content));
+        //return ResultBean.success("");
     }
 
 

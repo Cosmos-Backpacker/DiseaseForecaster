@@ -2,10 +2,20 @@ package com.forecaster.listener;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.forecaster.bean.WebSocket.RoleContent;
+import com.forecaster.bean.ImageUnderstand.RoleContentImage;
+import com.forecaster.bean.WebSocketBigModel.ResultBean;
+import com.forecaster.bean.WebSocketBigModel.RoleContent;
 import com.forecaster.config.XFConfig;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,12 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static com.forecaster.utils.OcrUtil.read;
 
 
 /**
@@ -49,7 +58,8 @@ public class XFWebClient {
      * @return: okhttp3.WebSocket
      **/
 
-    //通用大模型发起请求
+    //=========================通用大模型发起请求===============================
+    //建立webSocket连接，并返回对象
     public WebSocket sendMsg(String uid, ArrayList<RoleContent> questions, WebSocketListener listener) {
         // 获取鉴权url
         String authUrl = null;
@@ -82,7 +92,7 @@ public class XFWebClient {
      * @param: [讯飞大模型请求地址, apiKey, apiSecret]
      * @return: java.lang.String
      **/
-    //WebSocket通用协议鉴权
+    //====================================WebSocket通用协议鉴权================================
     public static String getAuthUrl_WebSocket(String hostUrl, String apiKey, String apiSecret) throws Exception {
         URL url = new URL(hostUrl);
         // 时间
@@ -113,6 +123,7 @@ public class XFWebClient {
 
         return httpUrl.toString();
     }
+
 
     /**
      * @description: 请求参数组装方法
@@ -153,6 +164,7 @@ public class XFWebClient {
         requestJson.put("payload", payload);
         return requestJson;
     }
+
 
     //=======================OCR鉴权===========================
     public static String getAuthUrl_OCR(String hostUrl, String apiKey, String apiSecret) throws Exception {
@@ -198,44 +210,211 @@ public class XFWebClient {
 
     //构造OCR请求体
     public String createRequestParams_OCR(MultipartFile file) throws IOException {
-        String param = "{"+
-                "    \"header\": {"+
-                "        \"app_id\": \""+xfConfig.getAppId()+"\","+
-                "        \"status\": 3"+
-                "    },"+
-                "    \"parameter\": {"+
-                "        \"sf8e6aca1\": {"+
-                "            \"category\": \"ch_en_public_cloud\","+
-                "            \"result\": {"+
-                "                \"encoding\": \"utf8\","+
-                "                \"compress\": \"raw\","+
-                "                \"format\": \"json\""+
-                "            }"+
-                "        }"+
-                "    },"+
-                "    \"payload\": {"+
-                "        \"sf8e6aca1_data_1\": {"+
-                "            \"encoding\": \"jpg\","+
+        String param = "{" +
+                "    \"header\": {" +
+                "        \"app_id\": \"" + xfConfig.getAppId() + "\"," +
+                "        \"status\": 3" +
+                "    }," +
+                "    \"parameter\": {" +
+                "        \"sf8e6aca1\": {" +
+                "            \"category\": \"ch_en_public_cloud\"," +
+                "            \"result\": {" +
+                "                \"encoding\": \"utf8\"," +
+                "                \"compress\": \"raw\"," +
+                "                \"format\": \"json\"" +
+                "            }" +
+                "        }" +
+                "    }," +
+                "    \"payload\": {" +
+                "        \"sf8e6aca1_data_1\": {" +
+                "            \"encoding\": \"jpg\"," +
                 "            \"status\": " + 3 + "," +
-                "            \"image\": \""+Base64.getEncoder().encodeToString(file.getBytes())+"\""+
-                "        }"+
-                "    }"+
+                "            \"image\": \"" + Base64.getEncoder().encodeToString(file.getBytes()) + "\"" +
+                "        }" +
+                "    }" +
                 "}";
 
         return param;
     }
 
 
+//=======================================图片理解=========================================
+
+//鉴权方法和大模型方法一致
+
+    //构造请求体参数
+    public JSONObject createRequestParams_Image(String uid, List<RoleContentImage> questions) {
+
+        JSONObject requestJson = new JSONObject();
+
+        JSONObject header = new JSONObject();  // header参数
+        header.put("app_id", xfConfig.getAppId());
+        header.put("uid", uid);
 
 
+        JSONObject parameter = new JSONObject(); // parameter参数
+        JSONObject chat = new JSONObject();
+        chat.put("domain", "image");
+        chat.put("temperature", 0.5);
+        chat.put("max_tokens", 4096);
+        chat.put("auditing", "default");
+        parameter.put("chat", chat);
+
+        JSONObject payload = new JSONObject(); // payload参数
+        JSONObject message = new JSONObject();
+        JSONArray text = new JSONArray();
+
+        text.addAll(questions);    //text封装用户的问题
 
 
+        message.put("text", text);
+        payload.put("message", message);
 
 
+        requestJson.put("header", header);
+        requestJson.put("parameter", parameter);
+        requestJson.put("payload", payload);
+
+        return requestJson;
+    }
 
 
+    //====================================建立连接并发送消息函数
+    public WebSocket sendImageMessage(String uid, ArrayList<RoleContentImage> questions, WebSocketListener listener) {
+        // 获取鉴权url
+        String authUrl = null;
+        try {
+            authUrl = getAuthUrl_WebSocket(xfConfig.getHostUrlImageU(), xfConfig.getApiKey(), xfConfig.getApiSecret());
+        } catch (Exception e) {
+            log.error("鉴权失败：{}", e);
+            return null;
+        }
+        // 鉴权方法生成失败，直接返回 null
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+        // 将 https/http 连接替换为 ws/wss 连接
+        String url = authUrl.replace("http://", "ws://").replace("https://", "wss://");
+        Request request = new Request.Builder().url(url).build();
+        // 建立 wss 连接
+        WebSocket webSocket = okHttpClient.newWebSocket(request, listener);
+        // 组装请求参数
+        JSONObject requestDTO = createRequestParams_Image(uid, questions);
+        // 发送请求
+        webSocket.send(JSONObject.toJSONString(requestDTO));
+
+        return webSocket;
+
+    }
 
 
+    //=======================================图片生成=========================================
+    //http通用鉴权
+    public static String getAuthUrl_ImageG(String hostUrl, String apiKey, String apiSecret) throws Exception {
+        URL url = new URL(hostUrl);
+        // 时间
+        SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String date = format.format(new Date());
+        // date="Thu, 12 Oct 2023 03:05:28 GMT";
+        // 拼接
+        String preStr = "host: " + url.getHost() + "\n" + "date: " + date + "\n" + "POST " + url.getPath() + " HTTP/1.1";
+        // System.err.println(preStr);
+        // SHA256加密
+        Mac mac = Mac.getInstance("hmacsha256");
+        SecretKeySpec spec = new SecretKeySpec(apiSecret.getBytes(StandardCharsets.UTF_8), "hmacsha256");
+        mac.init(spec);
+
+        byte[] hexDigits = mac.doFinal(preStr.getBytes(StandardCharsets.UTF_8));
+        // Base64加密
+        String sha = Base64.getEncoder().encodeToString(hexDigits);
+        // System.err.println(sha);
+        // 拼接
+        String authorization = String.format("api_key=\"%s\", algorithm=\"%s\", headers=\"%s\", signature=\"%s\"", apiKey, "hmac-sha256", "host date request-line", sha);
+        // 拼接地址
+        HttpUrl httpUrl = Objects.requireNonNull(HttpUrl.parse("https://" + url.getHost() + url.getPath())).newBuilder().//
+                addQueryParameter("authorization", Base64.getEncoder().encodeToString(authorization.getBytes(StandardCharsets.UTF_8))).//
+                addQueryParameter("date", date).//
+                addQueryParameter("host", url.getHost()).//
+                build();
+
+        // System.err.println(httpUrl.toString());
+        return httpUrl.toString();
+    }
+
+
+    //里面可以更改生成的图片的大小
+    public String createRequestParams_ImageG(String uid, String content) throws IOException {
+        String params = "{\n" +
+                "  \"header\": {\n" +
+                "    \"app_id\": \"" + xfConfig.getAppId() + "\",\n" +
+                "    \"uid\": \"" + uid + "\"\n" +
+                "  },\n" +
+                "  \"parameter\": {\n" +
+                "    \"chat\": {\n" +
+                "      \"domain\": \"s291394db\",\n" +
+                "      \"temperature\": 0.5,\n" +
+                "      \"max_tokens\": 4096,\n" +
+                "      \"width\": 512,\n" +
+                "      \"height\": 512\n" +
+                "    }\n" +
+                "  },\n" +
+                "  \"payload\": {\n" +
+                "    \"message\": {\n" +
+                "      \"text\": [\n" +
+                "        {\n" +
+                "          \"role\": \"user\",\n" +
+                "          \"content\": \"" + content + "\"\n" +
+                "        }\n" +
+                "      ]\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+
+        return params;
+    }
+
+    //=======================图片生成请求方法===============
+
+    public String ImageGenerationRequest(String uid, String content) {
+        String authUrl = null;
+        try {
+            authUrl = getAuthUrl_ImageG(xfConfig.getHostUrlImageG(), xfConfig.getApiKey(), xfConfig.getApiSecret());
+            CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
+            CloseableHttpResponse closeableHttpResponse = null;
+            String resultString = "";
+            try {
+                // 创建Http Post请求
+                String asciiUrl = URI.create(authUrl).toASCIIString();
+                RequestBuilder builder = RequestBuilder.post(asciiUrl);
+                builder.setCharset(StandardCharsets.UTF_8);
+
+                // 创建请求内容
+                StringEntity entity = new StringEntity(createRequestParams_ImageG(uid, content), ContentType.APPLICATION_JSON);
+                builder.setEntity(entity);
+                HttpUriRequest request = builder.build();
+                // 执行http请求
+                closeableHttpResponse = closeableHttpClient.execute(request);
+                resultString = EntityUtils.toString(closeableHttpResponse.getEntity(), StandardCharsets.UTF_8);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (closeableHttpResponse != null) {
+                        closeableHttpResponse.close();
+                    }
+                    if (closeableHttpClient != null) {
+                        closeableHttpClient.close();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return resultString;
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
 

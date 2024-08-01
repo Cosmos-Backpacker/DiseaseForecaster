@@ -27,6 +27,9 @@ public class XFConfig {
 
     private Integer maxResponseTime;
 
+    private String hostUrlImageU;    //图片理解接口
+
+    private String hostUrlImageG;    //图片生成接口
 
 
 }

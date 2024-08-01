@@ -128,7 +128,7 @@ public class PythonUtils {
                         if (jieshao.contains("end")) {
                             break;
                         } else {
-                            result_jieshao.append(jieshao);
+                            result_jieshao.append(jieshao).append("\n");
                         }
                     }
                 }
@@ -139,7 +139,7 @@ public class PythonUtils {
                         if (zhengzhuang.contains("end")) {
                             break;
                         } else {
-                            result_zhengzhuang.append(zhengzhuang);
+                            result_zhengzhuang.append(zhengzhuang).append('\n');
                         }
                     }
                 }
@@ -150,7 +150,7 @@ public class PythonUtils {
                         if (bingyin.contains("end")) {
                             break;
                         } else {
-                            result_bingyin.append(bingyin);
+                            result_bingyin.append(bingyin).append('\n');
                         }
                     }
                 }
@@ -161,7 +161,7 @@ public class PythonUtils {
                         if (bingfazheng.contains("end")) {
                             break;
                         } else {
-                            result_bingfazheng.append(bingfazheng);
+                            result_bingfazheng.append(bingfazheng).append('\n');
                         }
                     }
                 }
@@ -172,7 +172,7 @@ public class PythonUtils {
                         if (food.contains("end")) {
                             break;
                         } else {
-                            result_dofood.append(food);
+                            result_dofood.append(food).append('\n');
                         }
                     }
                 }
@@ -187,7 +187,7 @@ public class PythonUtils {
                             break;
                         } else {
                             //System.out.println("sdlfajsdlkf");
-                            result_not_food.append(food);
+                            result_not_food.append(food).append('\n');
                         }
                     }
                 }
@@ -198,7 +198,7 @@ public class PythonUtils {
                         if (drug.contains("end")) {
                             break;
                         } else {
-                            result_drug.append(drug);
+                            result_drug.append(drug).append('\n');
                         }
                     }
                 }
@@ -210,7 +210,7 @@ public class PythonUtils {
                         if (yufang.contains("end")) {
                             break;
                         } else {
-                            result_yufang.append(yufang);
+                            result_yufang.append(yufang).append('\n');
                         }
                     }
                 }
@@ -221,7 +221,7 @@ public class PythonUtils {
                         if (zhiliao.contains("end")) {
                             break;
                         } else {
-                            result_zhiliao.append(zhiliao);
+                            result_zhiliao.append(zhiliao).append('\n');
                         }
                     }
                 }
@@ -232,7 +232,7 @@ public class PythonUtils {
                         if (zhiliao_long.contains("end")) {
                             break;
                         } else {
-                            result_zhiliao_long.append(zhiliao_long);
+                            result_zhiliao_long.append(zhiliao_long).append('\n');
                         }
                     }
                 }
@@ -243,7 +243,7 @@ public class PythonUtils {
                         if (zhiliao_gailv.contains("end")) {
                             break;
                         } else {
-                            result_zhiliao_gailv.append(zhiliao_gailv);
+                            result_zhiliao_gailv.append(zhiliao_gailv).append('\n');
                         }
                     }
                 }
@@ -254,7 +254,7 @@ public class PythonUtils {
                         if (renqun.contains("end")) {
                             break;
                         } else {
-                            result_renqun.append(renqun);
+                            result_renqun.append(renqun).append('\n');
                         }
                     }
                 }
@@ -265,7 +265,7 @@ public class PythonUtils {
                         if (jiancha.contains("end")) {
                             break;
                         } else {
-                            result_jiancha.append(jiancha);
+                            result_jiancha.append(jiancha).append('\n');
                         }
                     }
                 }
@@ -297,7 +297,7 @@ public class PythonUtils {
         }
         log.info("代码调用成功");
 
-        return Result.success("查询成功", map);
+        return Result.success("查询成功", map.toString());
 
     }
 

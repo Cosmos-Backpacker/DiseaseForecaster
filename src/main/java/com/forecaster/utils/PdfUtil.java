@@ -2,15 +2,48 @@ package com.forecaster.utils;
 
 import com.forecaster.pojo.Advice;
 import com.forecaster.pojo.User;
+import com.forecaster.service.XFService;
+import com.forecaster.service.impl.XFServiceImpl;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 
+
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfWriter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.io.ByteArrayInputStream;
+
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Base64;
 
+@Slf4j
+@Component
 public class PdfUtil {
+
+    private static XFService xfService;
+
+    public PdfUtil(XFService xfService) {
+        this.xfService = xfService;
+    }
+//    public static PdfUtil pdfUtil;
+//
+//    @PostConstruct
+//    public void init() {
+//        pdfUtil = this;
+//        pdfUtil.xfService = this.xfService;
+//        //初使化时将已静态化的accessTokenOcrRepository实例化
+//    }
+
+
     public static void ExportPdf(HttpServletRequest request, HttpServletResponse response, User user, Advice advice) throws Exception {
         //告诉浏览器用什么软件可以打开此文件
         response.setHeader("content-Type", "application/pdf");
@@ -21,6 +54,9 @@ public class PdfUtil {
         Font FontChinese = new Font(bfChinese, 12, Font.NORMAL);
         //创建一个文档
         Document document = new Document(PageSize.A4);
+        //======================测试加入一个图片===================================
+
+
         //创建第一个段落
         Paragraph titleParagraph = new Paragraph();
         //支持中文
@@ -39,6 +75,28 @@ public class PdfUtil {
 
         // 打开文档
         document.open();
+
+        //测试======================================加入图片===================================
+        //调用大模型生成图片
+        //String textBase64Decode = new String(Base64.getDecoder().decode(xfService.ImageGeneration("001", "画一个苹果给我")), "utf-8");
+
+        //log.info("base64编码为{}",xfService.ImageGeneration("001", "画一个苹果给我"));
+        //对图片进行解码
+        byte[] imageBytes = Base64.getDecoder().decode(xfService.ImageGeneration("001", "画一个健康营养餐"));
+
+        //先临时将生成的图片保存在resource目录下
+        ImageUtils.saveImageFromBytes(imageBytes, "src/main/resources/temp.png");
+
+        //然后调用itexPdf依赖中的函数吗，将图片给保存到pdf中
+        Image image = Image.getInstance("src/main/resources/temp.png");
+
+        // 设置图片的宽度和高度，可以根据需要调整
+        image.scaleToFit(200, 200); // 例如，缩放到200x200像素
+        //这个是设置图片在pdf中的位置
+        image.setAbsolutePosition(100, 700);
+        // 将图片添加到文档中
+        document.add(image);
+
         //设置文档标题
         document.addTitle("疾病预测平台");
         //设置文档作者

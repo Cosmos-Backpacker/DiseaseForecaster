@@ -2,8 +2,8 @@ package com.forecaster.netty.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.forecaster.bean.WebSocket.NettyGroup;
-import com.forecaster.bean.WebSocket.ResultBean;
+import com.forecaster.bean.WebSocketBigModel.NettyGroup;
+import com.forecaster.bean.WebSocketBigModel.ResultBean;
 import com.forecaster.service.XFService;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
