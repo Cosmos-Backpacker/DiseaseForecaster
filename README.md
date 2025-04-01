@@ -32,7 +32,7 @@
 
 ![](https://pic1.imgdb.cn/item/67ebc9ed0ba3d5a1d7e91e0d.png)
 
-![image-20250401191221494](ReadMe.assets/image-20250401191221494.png)
+![](https://pic1.imgdb.cn/item/67ebd6720ba3d5a1d7e93f87.png)
 
 
 
@@ -72,7 +72,7 @@
 
 ![](https://pic1.imgdb.cn/item/67ebcad20ba3d5a1d7e91e2a.png)
 
-![image-20250401191800183](ReadMe.assets/image-20250401191800183.png)
+![](https://pic1.imgdb.cn/item/67ebd6f70ba3d5a1d7e9410c.png)
 
 结果
 
@@ -86,7 +86,7 @@ python项目是利用fastAPI来搭建
 
 ![](https://pic1.imgdb.cn/item/67ebcbd40ba3d5a1d7e91e64.png)
 
-![image-20250401192018878](ReadMe.assets/image-20250401192018878.png)
+![](https://pic1.imgdb.cn/item/67ebd7260ba3d5a1d7e941be.png)
 
 
 
